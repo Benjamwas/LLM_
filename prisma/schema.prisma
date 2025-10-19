@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//
+// ──────────────────────────────────────────────
+//  Model: Experiment
+// ──────────────────────────────────────────────
+//  Represents a single user experiment — one prompt tested
+//  with different parameter combinations.
+//
+model Experiment {
+  id         Int               @id @default(autoincrement())
+  prompt     String
+  createdAt  DateTime          @default(now())
+
+  // JSON field to store experiment summary (optional)
+  results    Json?
+
+  // Relation: One experiment → Many responses
+  responses  ResponseResult[]
+}
+
+//
+// ──────────────────────────────────────────────
+//  Model: ResponseResult
+// ──────────────────────────────────────────────
+//  Stores the results of a single LLM API run for a
+//  given parameter combination.
+//
+model ResponseResult {
+  id              Int          @id @default(autoincrement())
+
+  // Foreign key reference to Experiment
+  experimentId    Int
+  experiment      Experiment    @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+
+  // LLM Parameters
+  temperature     Float
+  topP            Float
+
+  // Model Metadata
+  modelName       String?       // Example: "gpt-4-turbo", "gemini-flash"
+
+  // Raw Model Output
+  actualResponse  String        @db.Text
+
+  // Computed Quality Metrics
+  coherenceScore  Float         // Structural Coherence Score (0.0–1.0)
+  diversityScore  Float         // Lexical Diversity Score (0.0–1.0)
+
+  // Technical Metrics
+  latencyMs       Int           // API latency (ms)
+  tokenCount      Int           // Output tokens generated
+
+  // Timestamp
+  createdAt       DateTime      @default(now())
+
+  // Prevent duplicate parameter combinations for same experiment
+  @@unique([experimentId, temperature, topP])
+}
