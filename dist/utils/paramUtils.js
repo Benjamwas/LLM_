@@ -1,4 +1,7 @@
-export function expandGrid(params) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.expandGrid = expandGrid;
+function expandGrid(params) {
     const keys = Object.keys(params);
     const results = [];
     function helper(index, current) {

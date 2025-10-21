@@ -1,3 +1,4 @@
+"use strict";
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 async function saveExperiment(experiment) {
@@ -18,5 +19,4 @@ async function getExperiments() {
     return experiments;
 }
 module.exports = { saveExperiment, getExperiments };
-export {};
 //# sourceMappingURL=db.js.map

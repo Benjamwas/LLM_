@@ -1,10 +1,10 @@
-import express from 'express';
-import { generateExperiment, listExperiments } from '../Controllers/experimentController';
+import express from "express";
+import { generateExperiment, listExperiments } from "../Controllers/experimentController";
 
-const router = express.Router();
+const experimentRouter = express.Router();
 
-// Experiment routes
-router.post('/generate-experiment', generateExperiment);
-router.get('/experiments', listExperiments);
+// Routes for experiments
+experimentRouter.post("/generate-experiment", generateExperiment);
+experimentRouter.get("/experiments", listExperiments);
 
-export default router;
+export default experimentRouter;

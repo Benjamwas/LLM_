@@ -1,4 +1,7 @@
-export function computeMetrics(response, prompt) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeMetrics = computeMetrics;
+function computeMetrics(response, prompt) {
     const tokenArray = response.split(/\s+/);
     const tokens = tokenArray.length;
     const uniqueTokens = new Set(tokenArray);
